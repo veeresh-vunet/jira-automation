@@ -63,3 +63,11 @@ kubectl apply -f k8s/secret.yaml
 kubectl apply -f k8s/deployment.yaml
 kubectl logs -f deployment/auto-jira
 ```
+
+
+## Docker Image
+Pull and run the image:
+```bash
+docker pull veeeeeeee/jira-automation:latest
+docker run --env-file .env veeeeeeee/jira-automation:latest
+```
