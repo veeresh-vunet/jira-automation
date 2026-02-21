@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: automation-jira
+  namespace: default
+  labels:
+    app: auto-jira
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auto-jira
+  template:
+    metadata:
+      labels:
+        app: auto-jira
+    spec:
+      containers:
+      - name: auto-jira
+        image: your-registry/auto-jira:latest
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+            name: auto-jira-secret
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        restartPolicy: Always
