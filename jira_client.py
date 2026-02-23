@@ -33,7 +33,8 @@ def fetch_open_tickets():
             "reporter",
             "assignee",
             "customfield_10106",
-            "customfield_10369"
+            "customfield_10369",
+            "customfield_10498"
         ]
     }
 
