@@ -11,15 +11,26 @@ def extract_full_text(adf):
     return text
 
 
+def is_external_customer(issue):
+    client_type = issue["fields"].get("customfield_10498", {})
+    if isinstance(client_type, dict):
+        value = client_type.get("value", "").lower()
+        return "external" in value
+    return False
+
+
 def check_reporter_observation(issue):
-    # ✅ Read from customfield_10106 — this is where actual user values are stored
+    # Skip field check for external customers
+    if is_external_customer(issue):
+        print(f"⏭️ External customer — skipping field check")
+        return []
+
     field = issue["fields"].get("customfield_10106")
 
     if not field:
         return []
 
     text = " ".join(extract_full_text(field).split()).lower()
-    
 
     questions = [
         ("Initial insights", "mention any initial insights"),
