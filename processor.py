@@ -20,11 +20,6 @@ def is_external_customer(issue):
 
 
 def check_reporter_observation(issue):
-    # Skip field check for external customers
-    if is_external_customer(issue):
-        print(f"⏭️ External customer — skipping field check")
-        return []
-
     field = issue["fields"].get("customfield_10106")
 
     if not field:
@@ -74,6 +69,17 @@ def check_reporter_observation(issue):
 
 
 def check_required_fields(issue):
+    # Skip field check for external customers
+    if is_external_customer(issue):
+        print(f"⏭️ External customer — skipping field check")
+        return []
+
+    # Skip field check for New Feature and Task
+    issuetype = issue["fields"].get("issuetype", {}).get("name", "")
+    if issuetype in ["New Feature", "Task"]:
+        print(f"⏭️ {issuetype} ticket — skipping field check")
+        return []
+
     return check_reporter_observation(issue)
 
 
