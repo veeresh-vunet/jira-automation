@@ -10,9 +10,6 @@ API_TOKEN = os.getenv("GREEN_API_TOKEN")
 GROUP_CHAT_ID = os.getenv("GREEN_GROUP_CHAT_ID")
 JIRA_BASE_URL = "https://vunetsystems.atlassian.net/browse"
 
-# Load mapping from env
-ASSIGNEE_PHONE_MAP = json.loads(os.getenv("ASSIGNEE_PHONE_MAP", "{}"))
-
 
 def check_whatsapp_status():
     url = f"https://api.green-api.com/waInstance{INSTANCE_ID}/getStateInstance/{API_TOKEN}"
@@ -39,7 +36,6 @@ def send_whatsapp_notification(issue, missing_fields, severity=None):
     issuetype = issue["fields"].get("issuetype", {}).get("name", "N/A")
     summary = issue["fields"].get("summary", "N/A")
 
-    phone = ASSIGNEE_PHONE_MAP.get(assignee_name)
 
     if missing_fields:
         fields_list = "\n".join([f"  - {f}" for f in missing_fields])
@@ -65,14 +61,7 @@ def send_whatsapp_notification(issue, missing_fields, severity=None):
 
     url = f"https://api.green-api.com/waInstance{INSTANCE_ID}/sendMessage/{API_TOKEN}"
 
-    if phone:
-        payload = {
-            "chatId": GROUP_CHAT_ID,
-            "message": message,
-            "mentionedPhoneNumbersList": [phone]
-        }
-    else:
-        payload = {
+    payload = {
             "chatId": GROUP_CHAT_ID,
             "message": message
         }
