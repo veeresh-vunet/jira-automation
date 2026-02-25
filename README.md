@@ -56,6 +56,10 @@ docker run --rm -v "${PWD}:/app" python:3.11-slim bash -c \
    pip install requests python-dotenv pyinstaller && \
    cd /app && pyinstaller --onefile main.py"
 ```
+### Build binary
+```bash
+docker build -t jira-automation:latest . 
+```
 
 ### Deploy to Kubernetes
 ```bash
